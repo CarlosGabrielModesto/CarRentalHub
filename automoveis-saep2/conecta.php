@@ -12,4 +12,7 @@ $conectaBD = mysqli_connect($host, $user, $password, $database);
   if (!$conectaBD) {
     print("Falha na conexão com a base de dados... Código do erro: " . mysqli_connect_errno());
   }
+
+  // Define a codificação UTF-8 para a conexão
+  mysqli_set_charset($conectaBD, "utf8");
 ?>

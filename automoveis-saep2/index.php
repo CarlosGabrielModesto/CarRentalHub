@@ -35,15 +35,38 @@
 
     <!-- Conteúdo -->
     <section class="container">
-        <table class="table table-bordered text-center text-uppercase ">
-            <thead>
+        <table class="table table-striped text-center text-uppercase shadow">
+            <thead class="bg-dark">
                 <tr>
-                    <th scope="col" class="bg-secondary text-white">Área</th>
-                    <th scope="col" class="bg-secondary text-white">Veículos à Venda</th>
-                    <th scope="col" class="bg-secondary text-white">Ações</th>
+                    <th scope="col" class="text-white">Área</th>
+                    <th scope="col" class="text-white">Modelos à Venda</th>
+                    <th scope="col" class="text-white">Ações</th>
                 </tr>
             </thead>
-            <thbody></thbody>
+            <thbody>
+                <?php
+                //Inclusao do arquivo de conexão com o BD
+                include("conecta.php");
+
+                //Instrução que busca os dados no banco de dados
+                $SQL = "SELECT area, COUNT(automovel) AS quantidade FROM alocacao GROUP BY area";
+
+                //Executa a instrução de consulta do banco de dados
+                $consulta = mysqli_query($conectaBD, $SQL);
+
+                //Exibe todos os retornos da consulta do banco de dados.
+                while ($automovel = mysqli_fetch_assoc($consulta)) {
+                    ?>
+                    
+                    <tr>
+                        <td class="font-weight-bold"><?php print($automovel["area"]); ?></td>
+                        <td><?php print($automovel["quantidade"]); ?></td>
+                        <td><a class="btn btn-info" href="lista-automoveis.php?area=<?php print($automovel["area"]); ?>">Visualizar</a></td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </thbody>
         </table>
     </section>
 

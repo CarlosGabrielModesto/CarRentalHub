@@ -1,3 +1,11 @@
+<?php
+//Inclusao do arquivo de conexão com o BD
+include("conecta.php");
+//Recupera o ID e a area via método GET.
+$idAutomovel = $_GET["id"];
+$area = $_GET["area"];
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -34,28 +42,93 @@
     </header>
 
     <!-- Conteúdo -->
-    <section class="container justify-content-center">
+    <section class="container d-flex flex-column align-items-center">
+        <form class="col-8 shadow mb-5 bg-body rounded p-3 ">
 
-        <h2 class="text-center">XYZ</h2>
+            <?php
+            //Consulta que carrega os dados do automóvel
+            $SQLAutomovel = "SELECT modelo FROM automoveis WHERE id = '$idAutomovel';";
 
-        <form class="col-8">
+            //Executa a instrução de consulta do banco de dados
+            $consultaAutomovel = mysqli_query($conectaBD, $SQLAutomovel);
+
+            //cria um vetor com os dados do modelo de automóvel.
+            $automovel = mysqli_fetch_assoc($consultaAutomovel);
+            ?>
+
+            <h2 class="d-flex justify-content-center"><?php print($automovel["modelo"]); ?></h2>
             <div class="form-group">
                 <label>Cliente</label>
                 <select class="form-control" name="">
-                    <option>1</option>
+                    <?php
+                    //Instrução que busca os dados no banco de dados
+                    $SQLCliente = "SELECT id, nome FROM clientes;";
+
+                    //Executa a instrução de consulta do banco de dados
+                    $consultaCliente = mysqli_query($conectaBD, $SQLCliente);
+
+                    //Exibe todos os retornos da consulta do banco de dados.
+                    while ($cliente = mysqli_fetch_assoc($consultaCliente)) {
+                    ?>
+                        <option value="<?php print($cliente["id"]) ?>"><?php print($cliente["nome"]) ?></option>
+                    <?php
+                    }
+
+                    // Fecha a conexão com o banco de dados
+                    mysqli_close($connect);
+                    ?>
                 </select>
             </div>
             <div class="form-group">
                 <label>Concessionária</label>
                 <select class="form-control" name="">
-                    <option>1</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-dark">Vender Automóvel</button>
-            </div>
-        </form>
+                    <?php
+                    //Consulta que carrega os dados do automóvel
+                    $SQLAutomovel = "SELECT modelo FROM automoveis WHERE id = '$idAutomovel';";
 
+                    //Executa a instrução de consulta do banco de dados
+                    $consultaAutomovel = mysqli_query($conectaBD, $SQLAutomovel);
+
+                    //cria um vetor com os dados do modelo de automóvel.
+                    $automovel = mysqli_fetch_assoc($consultaAutomovel);
+                    ?>
+
+                    <h2 class="d-flex justify-content-center"><?php print($automovel["modelo"]); ?></h2>
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <select class="form-control" name="">
+                            <?php
+                            //Instrução que busca os dados no banco de dados
+                            $SQLConcessionaria = "SELECT concessionaria FROM alocacao WHERE area = '$area' AND automovel = '$idAutomovel';";
+
+                            //Executa a instrução de consulta do banco de dados
+                            $consultaConcessionaria = mysqli_query($conectaBD, $SQLConcessionaria);
+
+                            //Carrega os dados da consulta em um vetor
+                            $concessionaria = mysqli_fetch_assoc($consultaConcessionaria);
+
+                            //Grava o ID da concessionaria em uma variável
+                            $idConcessionaria = $concessionaria["concessionaria"];
+
+                            //Instrução que busca os dados no banco de dados
+                            $SQLNomeCS = "SELECT concessionaria FROM concessionarias WHERE id = '$idConcessionaria';";
+
+                            //Executa a instrução de consulta do banco de dados
+                            $consultaNomeCS = mysqli_query($conectaBD, $SQLNomeCS);
+
+                            //Exibe todos os retornos da consulta do banco de dados.
+                            while ($nomeCS = mysqli_fetch_assoc($consultaNomeCS)) {
+                            ?>
+                                <option value="<?php print($idConcessionaria); ?>"><?php print($nomeCS["concessionaria"]) ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <button type="submit" class="btn btn-dark">Vender</button>
+                    </div>
+        </form>
     </section>
 
     <!-- JavaScript do Bootstrap  -->
