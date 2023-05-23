@@ -114,14 +114,16 @@ $area = $_GET["area"];
 
             </div>
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-info">Vender Automóvel</button>
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-info mt-3">Vender Automóvel</button>
             </div>
+
         </form>
 
 
     </section>
 
+    <!-- JavaScript personalizado  -->
     <script src="script.js"></script>
     <!-- JavaScript do Bootstrap  -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -146,7 +148,7 @@ $area = $_GET["area"];
     </div>
     <hr class="bg-secondary mb-2">
     <div class="container mb-2">
-        <span class="text-muted">Criado por Carlos Gabriel dos Santos Modesto &copy; 2023 | Versão 1.0</span>
+        <span class="text-muted">Criado por Carlos Gabriel dos Santos Modesto &copy; 2023 | Versão 1.1</span>
     </div>
 </footer>
 

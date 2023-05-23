@@ -36,79 +36,90 @@
 
     <!-- Conteúdo -->
     <section class="container">
-        <table class="table table-striped text-center text-uppercase shadow">
-            <thead class="bg-dark">
-                <tr>
-                    <th scope="col" class="text-white">Área</th>
-                    <th scope="col" class="text-white">Disponibilidade</th>
-                    <th scope="col" class="text-white">Ações</th>
-                </tr>
-            </thead>
-            <thbody>
-                <?php
-                //Inclusão do arquivo de conexão com o banco de dados.
-                include("conecta.php");
-
-                //Instrução que busca os dados no banco de dados.
-                $SQL = "SELECT area, COUNT(quantidade) AS quantidade FROM alocacao GROUP BY area;";
-
-                //Executa a instrução de consulta no banco de dados.
-                $consulta = mysqli_query($conectaBD, $SQL);
-
-                //Contador.
-                $contador = 1;
-
-                //Cria as 11 linhas referente as 11 áreas.
-                while ($contador <= 11) {
-
-                    //Variável de controle do que será exibido.
-                    $controle = false;
-
-                    //Laço de repetição que apresenta o conteúdo do banco de dados.
-                    while ($automovel = mysqli_fetch_assoc($consulta)) {
-
-                        //Apresenta o conteúdo quando existe retorno do banco de dados.
-                        if ($automovel["area"] == $contador) {
-                ?>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="table-responsive">
+                    <table class="table table-striped text-center text-uppercase shadow">
+                        <thead class="bg-dark">
                             <tr>
-                                <td class="bg-success opacity-75"><?php print("Área " . $automovel["area"]); ?></td>
-                                <td><?php print($automovel["quantidade"]); ?></td>
-                                <td><a class="btn btn-success" href="lista-automoveis.php?area=<?php print($automovel["area"]); ?>">Visualizar</a></td>
+                                <th scope="col" class="text-white">Área</th>
+                                <th scope="col" class="text-white">Disponibilidade</th>
+                                <th scope="col" class="text-white">Ações</th>
                             </tr>
-                        <?php
+                        </thead>
+                        <thbody>
+                            <?php
+                            //Inclusão do arquivo de conexão com o banco de dados.
+                            include("conecta.php");
 
-                            //Marca o controle como TRUE para informar que achou o que procurava.
-                            $controle = true;
-                            break;
-                        }
-                    }
+                            //Instrução que busca os dados no banco de dados.
+                            $SQL = "SELECT area, COUNT(quantidade) AS quantidade FROM alocacao GROUP BY area;";
 
-                    //Apresenta o conteúdo que não retornou do banco de dados.
-                    if ($controle == false) {
-                        ?>
-                        <tr>
-                            <td class="bg-danger"><?php print("Área " . $contador); ?></td>
-                            <td>0</td>
-                            <td><a class="btn btn-dark disabled" href="lista-automoveis.php?area=<?php print($automovel["area"]); ?>">Visualizar</a></td>
-                        </tr>
-                <?php
-                    }
+                            //Executa a instrução de consulta no banco de dados.
+                            $consulta = mysqli_query($conectaBD, $SQL);
 
-                    $contador = $contador + 1;
-                    mysqli_data_seek($consulta, 0);
-                }
-                ?>
-            </thbody>
-        </table>
+                            //Contador.
+                            $contador = 1;
+
+                            //Cria as 11 linhas referente as 11 áreas.
+                            while ($contador <= 11) {
+
+                                //Variável de controle do que será exibido.
+                                $controle = false;
+
+                                //Laço de repetição que apresenta o conteúdo do banco de dados.
+                                while ($automovel = mysqli_fetch_assoc($consulta)) {
+
+                                    //Apresenta o conteúdo quando existe retorno do banco de dados.
+                                    if ($automovel["area"] == $contador) {
+                            ?>
+                                        <tr>
+                                            <td class="bg-success opacity-75 text-center align-middle"><?php print("Área " . $automovel["area"]); ?></td>
+                                            <td class="text-center align-middle"><?php print($automovel["quantidade"]); ?></td>
+                                            <td class="text-center align-middle"><a class="btn btn-success" href="lista-automoveis.php?area=<?php print($automovel["area"]); ?>">Visualizar</a></td>
+                                        </tr>
+                                    <?php
+
+                                        //Marca o controle como TRUE para informar que achou o que procurava.
+                                        $controle = true;
+                                        break;
+                                    }
+                                }
+
+                                //Apresenta o conteúdo que não retornou do banco de dados.
+                                if ($controle == false) {
+                                    ?>
+                                    <tr>
+                                        <td class="bg-danger text-center align-middle"><?php print("Área " . $contador); ?></td>
+                                        <td class="text-center align-middle">0</td>
+                                        <td class="text-center align-middle"><a class="btn btn-dark disabled" href="lista-automoveis.php?area=<?php print($automovel["area"]); ?>">Visualizar</a></td>
+                                    </tr>
+                            <?php
+                                }
+
+                                $contador = $contador + 1;
+                                mysqli_data_seek($consulta, 0);
+                            }
+                            ?>
+                        </thbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </section>
 
+    <!-- JavaScript personalizado  -->
     <script src="script.js"></script>
     <!-- JavaScript do Bootstrap  -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
+
+<!--Gambiarra - Sorry!-->
 <br><br><br><br><br><br><br><br>
+
+
 <!-- Rodapé -->
 <footer class="footer fixed-bottom bg-dark text-light text-center">
     <div class="col-md-12">
@@ -126,7 +137,7 @@
     </div>
     <hr class="bg-secondary mb-2">
     <div class="container mb-2">
-        <span class="text-muted">Criado por Carlos Gabriel dos Santos Modesto &copy; 2023 | Versão 1.0</span>
+        <span class="text-muted">Criado por Carlos Gabriel dos Santos Modesto &copy; 2023 | Versão 1.1</span>
     </div>
 </footer>
 

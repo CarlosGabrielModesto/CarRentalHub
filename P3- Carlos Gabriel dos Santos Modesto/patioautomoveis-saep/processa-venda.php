@@ -37,53 +37,69 @@
     <!-- Conteúdo -->
     <section class="container d-flex flex-column align-items-center">
 
-
         <?php
-        //inclusao do arquivo de conexao do bd
+        // Inclusão do arquivo de conexão com o banco de dados
         include("conecta.php");
 
-        //recupera o id e a area via metodo Post
+        // Recupera o ID do automóvel, cliente e concessionária via método POST
         $automovelID = $_POST["automovel"];
         $clienteID = $_POST["cliente"];
         $concessionariaID = $_POST["concessionaria"];
 
         //Instrucao SQL que ira atualizar o campo de quantidade de veículos
-        $SQL = "UPDATE alocacao SET quantidade = quantidade - 1 WHERE automovel = '$automovelID'
-        AND concessionaria = '$concessionariaID';";
+        $query = "SELECT modelo, preco FROM automoveis WHERE id = '$automovelID';";
+        $result = mysqli_query($conectaBD, $query);
+        $row = mysqli_fetch_assoc($result);
 
-        //Tenta executar a instruçao SQL
+
+        // Obtém o modelo e o preço do automóvel do banco de dados para ser utilizado na mensagem de agradecimento pela compra!
+        $modelo = $row["modelo"];
+        $preco = $row["preco"];
+
+        // Instrução SQL que irá atualizar o campo de quantidade de veículos
+        $SQL = "UPDATE alocacao SET quantidade = quantidade - 1 WHERE automovel = '$automovelID' AND concessionaria = '$concessionariaID';";
+
+        // Tenta executar a instrução SQL
         if (mysqli_query($conectaBD, $SQL)) {
 
-            //Encerra a conexão com o banco de dados.
+            // Encerra a conexão com o banco de dados
             mysqli_close($conectaBD);
 
-            //Exibe uma mensagem na tela do usuário
-            //print("venda efetuada com sucesso!!!");
-            echo '<div style="background-color: green; padding: 15px; color: white; border-radius: 5px; text-align: center; font-size: 18px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Venda efetuada com sucesso!!!</div>';
+            // Exibe uma mensagem se a venda for bem sucedida! A mensagem resgata o modelo e o preço e apresenta na tela =)
+            echo '<div style="background-color: #4CAF50; padding: 15px; color: white; border-radius: 5px; text-align: center; font-size: 18px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">';
+            echo 'Parabéns! Você adquiriu o modelo <span style="color: blue; font-weight: bold;">' . $modelo . '</span> por R$<span style="color: red; font-weight: bold;">' . $preco . '</span>. !!!';
+            echo '</div>';
 
-            //Espera 5 segundos e então redireciona o usuário.
+            // Exibe a mensagem do tempo que será aguardado antes do redirecionamento
+            echo '<div style="background-color: #ffc107; padding: 10px; color: white; border-radius: 5px; text-align: center; font-size: 16px; margin-top: 10px; font-weight: bold;">Aguarde <span style="color: red;">5 segundos</span> para ser redirecionado à página principal !!!</div>';
+
+            // Espera 5 segundos e então redireciona o usuário
             header("refresh: 5; URL= index.php");
         } else {
 
-            //Encerra a conexão com o banco de dados.
+            // Encerra a conexão com o banco de dados
             mysqli_close($conectaBD);
 
-            //Exibe uma mensagem na tela do usuário
-            //print("Não foi possivel efetuar a venda!!!");
-            echo '<div style="background-color: red; padding: 15px; color: white;border-radius: 5px; text-align: center; font-size: 18px;position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Não foi possível efetuar a venda!!!</div>';
+            //Exibe uma mensagem na tela do usuário, mas dessa fez para caso não dê certo a ação. =(
+            echo '<div style="background-color: #F44336; padding: 15px; color: white;border-radius: 5px; text-align: center; font-size: 18px;position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">';
+            echo 'Não foi possível efetuar a venda!!! =(';
+            echo '</div>';
 
-            //Espera 5 segundos e então redireciona o usuário.
+            // Exibe a mensagem do tempo que será aguardado antes do redirecionamento novamente.
+            echo '<div style="background-color: #ffc107; padding: 10px; color: white; border-radius: 5px; text-align: center; font-size: 16px; margin-top: 10px;">Aguarde 5 segundos para ser redirecionado à página principal !!!</div>';
+
+            // Espera 5 segundos e então redireciona o usuário
             header("refresh: 5; URL= index.php");
         }
         ?>
 
-    </section>
 
-    <script src="script.js"></script>
-    <!-- JavaScript do Bootstrap  -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+        <script src="script.js"></script>
+        <!-- JavaScript do Bootstrap  -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 
 <!-- Rodapé -->
@@ -103,7 +119,8 @@
     </div>
     <hr class="bg-secondary mb-2">
     <div class="container mb-2">
-        <span class="text-muted">Criado por Carlos Gabriel dos Santos Modesto &copy; 2023 | Versão 1.0</span>
+        <span class="text-muted">Criado por Carlos Gabriel dos Santos Modesto &copy; 2023 | Versão 1.1</span>
     </div>
 </footer>
+
 </html>
